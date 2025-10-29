@@ -1,0 +1,34 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: ms-andesstay-kafka-admin
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      auto-create: true
+      fail-fast: false
+      close-timeout: 10s
+
+andesstay:
+  kafka:
+    topics:
+      reservations-stream:
+        name: andesstay.reservations.stream
+        partitions: 3
+        replication-factor: 1
+        retention-ms: 604800000 # 7 días de retención para eventos de streaming
+        cleanup-policy: delete
+      analytics-telemetry:
+        name: andesstay.analytics.telemetry
+        partitions: 2
+        replication-factor: 1
+        retention-ms: 2592000000 # 30 días de retención para analítica
+        cleanup-policy: compact
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
